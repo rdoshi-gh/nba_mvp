@@ -1,0 +1,47 @@
+import os
+import pandas as pd
+
+# Map of MVP winners by season
+MVPs = {
+    "1999-00": "Shaquille O'Neal",
+    "2000-01": "Allen Iverson",
+    "2001-02": "Tim Duncan",
+    "2002-03": "Tim Duncan",
+    "2003-04": "Kevin Garnett",
+    "2004-05": "Steve Nash",
+    "2005-06": "Steve Nash",
+    "2006-07": "Dirk Nowitzki",
+    "2007-08": "Kobe Bryant",
+    "2008-09": "LeBron James",
+    "2009-10": "LeBron James",
+    "2010-11": "Derrick Rose",
+    "2011-12": "LeBron James",
+    "2012-13": "LeBron James",
+    "2013-14": "Kevin Durant",
+    "2014-15": "Stephen Curry",
+    "2015-16": "Stephen Curry",
+    "2016-17": "Russell Westbrook",
+    "2017-18": "James Harden",
+    "2018-19": "Giannis Antetokounmpo",
+    "2019-20": "LeBron James",
+    "2020-21": "Nikola Jokic",
+    "2021-22": "Nikola Jokic",
+    "2022-23": "Joel Embiid",
+    "2023-24": "Nikola Jokic"
+}
+
+def label_mvp():
+    # Load the raw data
+    df = pd.read_csv('data/raw/player_stats_raw.csv')
+
+    # Add an 'is_mvp' column where 1 is MVP, 0 is not
+    df['is_mvp'] = df.apply(lambda row: 1 if MVPs.get(row['Season']) == row['Player'] else 0, axis=1)
+    
+    # Create the 'data/processed' directory if it doesn't exist
+    os.makedirs('data/processed', exist_ok=True)
+
+    # Save processed data to a new CSV
+    df.to_csv('data/processed/player_stats_labeled.csv', index=False)
+
+if __name__ == "__main__":
+    label_mvp()
